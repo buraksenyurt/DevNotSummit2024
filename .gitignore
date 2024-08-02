@@ -23,6 +23,5 @@ node_modules
 *.cargo-lock
 workspace.xml
 
-target/
 bin/*
 obj/*
