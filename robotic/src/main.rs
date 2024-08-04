@@ -54,8 +54,8 @@ fn control_arms(robots: &mut Vec<Robot>, target_positions: Vec<(f32, f32)>) {
 
 fn calc_angle(position: &Position, new_position: &(f32, f32)) -> f32 {
     println!(
-        "Moving to new position {}:{}",
-        new_position.0, new_position.1
+        "Current position ({}:{})\nMoving to new position ({}:{})",
+        position.x, position.y, new_position.0, new_position.1
     );
     1.50
 }
