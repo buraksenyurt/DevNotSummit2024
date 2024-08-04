@@ -1,4 +1,5 @@
 use std::any::Any;
+use std::cell::{RefCell, RefMut};
 
 // Components
 pub struct Health(i32);
@@ -11,9 +12,9 @@ trait Component {
     fn as_any_mut(&mut self) -> &mut dyn Any;
 }
 
-impl<T: 'static> Component for Vec<Option<T>> {
+impl<T: 'static> Component for RefCell<Vec<Option<T>>> {
     fn push_none(&mut self) {
-        self.push(None)
+        self.get_mut().push(None)
     }
 
     fn as_any(&self) -> &dyn Any {
@@ -53,8 +54,11 @@ impl World {
         component: ComponentType,
     ) {
         for c in self.components.iter_mut() {
-            if let Some(comp_vec) = c.as_any_mut().downcast_mut::<Vec<Option<ComponentType>>>() {
-                comp_vec[entity] = Some(component);
+            if let Some(comp_vec) = c
+                .as_any_mut()
+                .downcast_mut::<RefCell<Vec<Option<ComponentType>>>>()
+            {
+                comp_vec.get_mut()[entity] = Some(component);
                 return;
             }
         }
@@ -67,13 +71,18 @@ impl World {
         }
 
         new_components[entity] = Some(component);
-        self.components.push(Box::new(new_components));
+        self.components.push(Box::new(RefCell::new(new_components)));
     }
 
-    pub fn borrow_components<ComponentType: 'static>(&self) -> Option<&Vec<Option<ComponentType>>> {
+    pub fn borrow_components<ComponentType: 'static>(
+        &self,
+    ) -> Option<RefMut<Vec<Option<ComponentType>>>> {
         for c in self.components.iter() {
-            if let Some(comp) = c.as_any().downcast_ref::<Vec<Option<ComponentType>>>() {
-                return Some(comp);
+            if let Some(comp) = c
+                .as_any()
+                .downcast_ref::<RefCell<Vec<Option<ComponentType>>>>()
+            {
+                return Some(comp.borrow_mut());
             }
         }
         None
@@ -97,23 +106,28 @@ fn main() {
     game_world.add_component(tower, Name("Tower Left"));
     game_world.add_component(tower, Health(1000));
 
-    let attackers = game_world
-        .borrow_components::<Health>()
-        .unwrap()
-        .iter()
-        .zip(game_world.borrow_components::<Attack>().unwrap().iter())
-        .zip(game_world.borrow_components::<Name>().unwrap().iter());
+    let mut healths = game_world.borrow_components::<Health>().unwrap();
+    let mut names = game_world.borrow_components::<Name>().unwrap();
+    let mut attacks = game_world.borrow_components::<Attack>().unwrap();
 
-    for (health, attack, name) in attackers.filter_map(|((health, attack), name)| {
-        Some((health.as_ref()?, attack.as_ref()?, name.as_ref()?))
-    }) {
+    let attackers = healths
+        .iter_mut()
+        .zip(names.iter_mut())
+        .zip(attacks.iter_mut())
+        .filter_map(|((health, name), attack)| {
+            Some((health.as_mut()?, name.as_mut()?, attack.as_mut()?))
+        });
+
+    for (health, name, attack) in attackers {
         if health.0 < 0 {
-            println!("{} has been dead!", name.0);
+            println!("{} has been dead on health {}", name.0, health.0);
         } else {
             println!(
-                "{} is still healthy and has {} attack power",
+                "{} is still healthy and has {} attack power.",
                 name.0, attack.0
             );
+            attack.0 += 1;
+            println!("Attack power increased to {}", attack.0);
         }
     }
 }
