@@ -1,3 +1,3 @@
 [workspace]
 resolver = "2"
-members = ["classic", "composition", "hello_ecs", "robotic", "simple_ecs"]
+members = ["classic", "composition", "hello_ecs", "robotic", "simple_ecs", "simple_ecs_2"]

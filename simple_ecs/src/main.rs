@@ -34,7 +34,11 @@ fn main() {
     game_world.create_entity(Some(Health(80)), Some(Attack(2)), Some(Id("Nazbendiyr")));
     game_world.create_entity(Some(Health(1000)), None, Some(Id("Tower_1")));
     game_world.create_entity(Some(Health(50)), None, Some(Id("Artillary_1")));
-    game_world.create_entity(Some(Health(-1)), Some(Attack(1)), Some(Id("Villager_Jonas")));
+    game_world.create_entity(
+        Some(Health(-1)),
+        Some(Attack(1)),
+        Some(Id("Villager_Jonas")),
+    );
 
     let attackers = game_world
         .healths
