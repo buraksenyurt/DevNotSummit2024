@@ -6,6 +6,14 @@ DevNot Developer Summit 2024 için oluşturulmuş repodur. Rust programlama dili
 
 ECS çatısında oyundaki her nesne benzersiz bir tanımlayıcı ile işaretlenir ve bu bir Entity olarak ifade edilir. Entity'lere eklenebilecek verileri içeren datatype nesneleri de birer Component olarak tasarlanır. Sistemler belli bileşenlere sahip Entity setlerinin dolaşılması için kullanılır.
 
+ECS, kodun yeniden kullanılabilirliğini _(Reusability)_ artırır ve veriyi davranışlardan _(Behavior)_ artırır.
+
+## ECS ile OOP Arasındaki Farklar
+
+- OOP tarafından kalıtım _(Inheritance)_ birinci sınıf vatandaş _(Citizen)_ ilen ECS'de composition'dır.
+- OOP veriyi encapsulate etmeyi önerir, ECS ise Plain Old Data nesnelerini teşvik eder.
+- ECS verileri davranışlardan ayırırken, OOP verileri davranışla birleştiren bir yol önerir.
+
 ## Composition over Inheritance İlkesi
 
 Entity Component System, kalıtım yerine Composition over Inheritance yaklaşımını kullanır. Bir Entity tür hiyerarşisi yerine onunla ilişkili bileşenleri *(Component)* tarafından tanımlanır. Sistemler, istenen bileşenlere sahip Entity koleksiyonları üzerinde harket ederek çeşitli işlemler icra edebilir.Her ikisi arasındaki farkı yorumlamak için classic ve composition isimli Rust projelerinin kodlarına bakılabilir.
