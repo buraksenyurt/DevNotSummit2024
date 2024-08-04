@@ -1,0 +1,7 @@
+[package]
+name = "composition"
+description = "Composition over Inheritance"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
