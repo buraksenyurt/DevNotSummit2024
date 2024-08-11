@@ -1,4 +1,4 @@
-# DevNot Summit 2024 - Rust ile Oyun Programlamada ECS Kullanımı
+![image](https://github.com/user-attachments/assets/1980eef0-5b83-452b-94ec-ec491ed60877)# DevNot Summit 2024 - Rust ile Oyun Programlamada ECS Kullanımı
 
 DevNot Developer Summit 2024 için oluşturulmuş repodur. Rust programlama dili ile oyun geliştirme konseptinde, **ECS** _(Entity Component System)_ kullanımına dair örnekler içermektedir.
 
@@ -9,6 +9,20 @@ DevNot Developer Summit 2024 için oluşturulmuş repodur. Rust programlama dili
   - [Tarihçe](#tarihçe)
   - [ECS in Kullanıldığı Diğer Alanlar](#ecs-in-kullanıldığı-diğer-alanlar)
   - [Kaynaklar](#kaynaklar)
+ 
+## Tanım
+
+## ECS Neden Gereklidir?
+
+Bir oyun geliştirirken aktörler, nesneler, bileşenler ve kaynaklar gibi önemli enstrümanlar kullanılır. Bazı durumlarda oyun dünyası içindeki tüm nesnelerin bir hareketi söz konusu iken buna durağan nesneler dahil değildir. Dolayısıyla belli component'lere sahip olan nesneler için gerçekleştirilecek süreçlerde, örneğin sadece hareket etme kabiliyeti olan nesnelerin her frame time anında bir kurala göre yer değiştirmesi ya da çarpışma ve hasar alma verileri içeren varlıklardan yok olanların sahadan ve oyun nesne koleksiyonlarından çıkartılması gibi devasa süreçlerde veri ile davranışın ayrıştırılması kod yönetimi, kod okunurluğu ve çalışma zamanı performansını artırabilir. Kalıtım bazlı klasik kod pratiklerini içeren oyun sistemlerinde bunu sağlamak çok kolay değildir. ECS burada bir çözüm olarak karşımıza çıkar. Yani nesne sayısının artmasına bağlı olarak oyun motorunun yavaşlaması ve kod ile verinin buna bağlı olarak çok karmaşıklaşması ECS ihtiyacını öne çıkaran konulardır. 
+
+ECS'in kazandırdığı bazı avantajlar şöyle sıralanabilir.
+
+- Kod ve veri ayrıldığından veri yeniden yorumlanabilir.
+- Kod tek bir Entity yerine birden fazal Entity üzerinde dolaşabilir.
+- Sistemler otomatik olarak paralel çalıştırılabilir.
+
+Unity DOTS ve Unreal Mass'a nazaran Rust için geliştirilmiş olan Bevy'nin kullanımı oldukça kolaydır. 
 
 ## ECS Hakkında Genel Bilgiler
 
@@ -19,15 +33,16 @@ ECS, kodun yeniden kullanılabilirliğini _(Reusability)_ artırır ve veriyi da
 Örneğin Tower Defence benzeri bir oyunu düşünelim. Entity ve Component ilişkilerini aşağıdaki gibi özetleyebiliriz.
 
 ```text
-+----------------+----------+----------+-------------+
-|   Components   |  Tower   |  Enemy   | Bullet      |
-+----------------+----------+----------+-------------+
-| Position       | (x, y)   | (x, y)   | (x, y)      |
-| Health         |          | (hp)     |             |
-| Damage         | (dmg)    |          | (dmg)       |
-| Range          | (range)  |          |             |
-| Velocity       |          | (vx, vy) | (vx, vy)    |
-+----------------+----------+----------+-------------+
++----------------+----------+----------+----------+----------+
+|   Components   | Player   |  Tower   |  Enemy   | Bullet   |
++----------------+----------+----------+----------+----------+
+| Position       | (x,y)    | (x, y)   | (x, y)   | (x, y)   |
+| Health         | (hp)     |          | (hp)     |          |
+| Damage         | (dmg)    | (dmg)    | (dmg)    |          |
+| Range          |          | (range)  |          |          |
+| Velocity       |          | (vx, vy) | (vx, vy) |          |
+| Inventory      | (inv)    |          |          |          |
++----------------+----------+----------+----------+----------+
 ```
 
 ## Composition over Inheritance İlkesi
