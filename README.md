@@ -2,13 +2,21 @@
 
 DevNot Developer Summit 2024 için oluşturulmuş repodur. Rust programlama dili ile oyun geliştirme konseptinde, **ECS** _(Entity Component System)_ kullanımına dair örnekler içermektedir.
 
+- [İçerik](#devnot-summit-2024-rust-ile-oyun-programlamada-ecs-kullanımı)
+  - [ECS Hakkında Genel Bilgiler](#ecs-hakkında-genel-bilgiler)
+  - [Composition over Inheritance İlkesi](#composition-over-inheritance-ilkesi)
+  - [ECS ile OOP Arasındaki Farklar](#ecs-ile-oop-arasındaki-farklar)
+  - [Tarihçe](#tarihçe)
+  - [ECS in Kullanıldığı Diğer Alanlar](#ecs-in-kullanıldığı-diğer-alanlar)
+  - [Kaynaklar](#kaynaklar)
+
 ## ECS Hakkında Genel Bilgiler
 
 ECS çatısında oyundaki her nesne benzersiz bir tanımlayıcı ile işaretlenir ve bu bir Entity olarak ifade edilir. Entity'lere eklenebilecek verileri içeren datatype nesneleri de birer Component olarak tasarlanır. Sistemler belli bileşenlere sahip Entity setlerinin dolaşılması için kullanılır.
 
-ECS, kodun yeniden kullanılabilirliğini _(Reusability)_ artırır ve veriyi davranışlardan _(Behavior)_ artırır.
+ECS, kodun yeniden kullanılabilirliğini _(Reusability)_ artırır ve veriyi davranışlardan _(Behavior)_ ayırır.
 
-Örneğin Tower Defence tadındaki bir oyunu düşünelim. Entity ve Component ilişkilerini aşağıdaki gibi özetleyebiliriz.
+Örneğin Tower Defence benzeri bir oyunu düşünelim. Entity ve Component ilişkilerini aşağıdaki gibi özetleyebiliriz.
 
 ```text
 +----------------+----------+----------+-------------+
@@ -22,12 +30,6 @@ ECS, kodun yeniden kullanılabilirliğini _(Reusability)_ artırır ve veriyi da
 +----------------+----------+----------+-------------+
 ```
 
-## ECS ile OOP Arasındaki Farklar
-
-- OOP tarafından kalıtım _(Inheritance)_ birinci sınıf vatandaş _(Citizen)_ ilen ECS'de composition'dır.
-- OOP veriyi encapsulate etmeyi önerir, ECS ise Plain Old Data nesnelerini teşvik eder.
-- ECS verileri davranışlardan ayırırken, OOP verileri davranışla birleştiren bir yol önerir.
-
 ## Composition over Inheritance İlkesi
 
 Entity Component System, kalıtım yerine Composition over Inheritance yaklaşımını kullanır. Bir Entity tür hiyerarşisi yerine onunla ilişkili bileşenleri *(Component)* tarafından tanımlanır. Sistemler, istenen bileşenlere sahip Entity koleksiyonları üzerinde harket ederek çeşitli işlemler icra edebilir.Her ikisi arasındaki farkı yorumlamak için classic ve composition isimli Rust projelerinin kodlarına bakılabilir.
@@ -37,6 +39,12 @@ cargo run --bin classic
 
 cargo run --bin composition
 ```
+
+## ECS ile OOP Arasındaki Farklar
+
+- OOP tarafından kalıtım _(Inheritance)_ birinci sınıf vatandaş _(Citizen)_ iken ECS çatısında bu Composition'dır.
+- OOP veriyi encapsulate etmeyi önerir, ECS ise Plain Old Data nesnelerini teşvik eder.
+- ECS veriyi davranışlardan ayırırken, OOP verileri davranışla birleştiren bir yol önerir.
 
 ## Tarihçe
 
