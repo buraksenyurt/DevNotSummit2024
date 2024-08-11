@@ -1,28 +1,38 @@
-![image](https://github.com/user-attachments/assets/1980eef0-5b83-452b-94ec-ec491ed60877)# DevNot Summit 2024 - Rust ile Oyun Programlamada ECS Kullanımı
+# DevNot Summit 2024 - Rust ile Oyun Programlamada ECS Kullanımı
 
 DevNot Developer Summit 2024 için oluşturulmuş repodur. Rust programlama dili ile oyun geliştirme konseptinde, **ECS** _(Entity Component System)_ kullanımına dair örnekler içermektedir.
 
 - [İçerik](#devnot-summit-2024-rust-ile-oyun-programlamada-ecs-kullanımı)
+  - [Tanım](#tanım)
+  - [ECS Neden Gereklidir?](#ecs-neden-gereklidir)
   - [ECS Hakkında Genel Bilgiler](#ecs-hakkında-genel-bilgiler)
   - [Composition over Inheritance İlkesi](#composition-over-inheritance-ilkesi)
   - [ECS ile OOP Arasındaki Farklar](#ecs-ile-oop-arasındaki-farklar)
   - [Tarihçe](#tarihçe)
   - [ECS in Kullanıldığı Diğer Alanlar](#ecs-in-kullanıldığı-diğer-alanlar)
+  - [Bevy ECS Hakkında](#bevy-ecs-hakkında)
   - [Kaynaklar](#kaynaklar)
  
 ## Tanım
 
+???
+
+**Entity:** Benzersiz ID ile tanımlı basit bir konteyner. Gerekli bileşenleri içerir.(Tower, Player, Enemy, Bullet, Gate)
+**Component:** Sadece veri içeren ve Entity nesnelerine eklenen nesnelerdir. Bir entity bir bileşen nesnesinden sadece bir tane içerebilir.
+**System:** Belli bileşenlere sahip Entity koleksiyonları üzerinde hareket edebilen, bileşen bazlı Entity kümelerini sorgulayabilen fonksiyonlardır.
+
 ## ECS Neden Gereklidir?
 
-Bir oyun geliştirirken aktörler, nesneler, bileşenler ve kaynaklar gibi önemli enstrümanlar kullanılır. Bazı durumlarda oyun dünyası içindeki tüm nesnelerin bir hareketi söz konusu iken buna durağan nesneler dahil değildir. Dolayısıyla belli component'lere sahip olan nesneler için gerçekleştirilecek süreçlerde, örneğin sadece hareket etme kabiliyeti olan nesnelerin her frame time anında bir kurala göre yer değiştirmesi ya da çarpışma ve hasar alma verileri içeren varlıklardan yok olanların sahadan ve oyun nesne koleksiyonlarından çıkartılması gibi devasa süreçlerde veri ile davranışın ayrıştırılması kod yönetimi, kod okunurluğu ve çalışma zamanı performansını artırabilir. Kalıtım bazlı klasik kod pratiklerini içeren oyun sistemlerinde bunu sağlamak çok kolay değildir. ECS burada bir çözüm olarak karşımıza çıkar. Yani nesne sayısının artmasına bağlı olarak oyun motorunun yavaşlaması ve kod ile verinin buna bağlı olarak çok karmaşıklaşması ECS ihtiyacını öne çıkaran konulardır. 
+Bir oyun geliştirirken aktörler, nesneler, bileşenler ve kaynaklar gibi önemli enstrümanlar kullanılır. Bazı durumlarda oyun dünyası içindeki tüm nesnelerin bir hareketi söz konusu iken buna durağan nesneler dahil değildir. Dolayısıyla belli component'lere sahip olan nesneler için gerçekleştirilecek süreçlerde, örneğin sadece hareket etme kabiliyeti olan varlıkların her frame time anında bir kurala göre yer değiştirmesi ya da çarpışma ve hasar alma verileri içeren varlıklardan yok olanların sahadan ve oyun nesne koleksiyonlarından çıkartılması gibi devasa süreçlerde veri ile davranışın ayrıştırılması kod yönetimi, kod okunurluğu ve çalışma zamanı performansını artırabilir. Kalıtım bazlı klasik kod pratiklerini içeren oyun sistemlerinde bunu sağlamak çok kolay değildir. ECS burada bir çözüm olarak karşımıza çıkar. Yani nesne sayısının artmasına bağlı olarak oyun motorunun yavaşlaması ve kod ile verinin buna bağlı olarak çok karmaşıklaşması ECS ihtiyacını öne çıkaran konulardır. 
 
 ECS'in kazandırdığı bazı avantajlar şöyle sıralanabilir.
 
 - Kod ve veri ayrıldığından veri yeniden yorumlanabilir.
 - Kod tek bir Entity yerine birden fazal Entity üzerinde dolaşabilir.
 - Sistemler otomatik olarak paralel çalıştırılabilir.
+- Sadece belli bileşenleri içeren Entity kümelerinde dolaşmak kolaydır.
 
-Unity DOTS ve Unreal Mass'a nazaran Rust için geliştirilmiş olan Bevy'nin kullanımı oldukça kolaydır. 
+_**Unity DOTS** ve **Unreal Mass**'a nazaran Rust için geliştirilmiş olan Bevy'nin kullanımı oldukça kolaydır._
 
 ## ECS Hakkında Genel Bilgiler
 
@@ -76,6 +86,13 @@ cargo run --bin composition
 - **Data-Driven Mimariler :** Büyük verilerin _(Big Data)_ işlenmesi ve analizinde kullanılabilir. Veri akışları _(Data Streams)_ birer Entity olabilir, metadata ve transformation kuralları ise birer bileşen olarak düşünülebilir. Sistemler verileri bu kurallara göre işler ve analiz eder.
 - **Sanal/Artırılmış Gerçeklik (VR/AR) :** Sanal ortamdaki nesneler birer Entity olarak temsil edebilir. Bu nesnelerin fiziksel özellikleri ve davranışları ise birer bileşen olarak düşünülebilir. Sistemler rendering, etkileşim ve gerçek hayat fizik ilkelerini işleyebilir.
 - **UI Frameworks :** Bu tip bir framework içerisinde Button, Slider, CheckBox, TextBox gibi unsular birer Entity olarak düşünüldüğünde boyutları, renkleri, durumları vb unsurlar da bileşen olarak tesis edilebilir. Sistemler çeşitli bileşenlere sahip entity nesnelerinin render edilmesi veya kullanıcı ile etkileşimini yönetebilir.
+
+## Bevy ECS Hakkında
+
+Bevy, ECS çatısının uygulanabildiği en ergonomik çatılardan birisidir. Bileşenler _(Components)_ struct olarak tanımlanırken, sistemler birer fonksiyon olarak yazılır. Bevy ECS, oyun dünyası _(World)_ , planlayıcı _(Scheduler)_ , komut listesi _(Command List)_, kaynaklar _(Resources)_ , sistem setleri _(System Sets)_ ve bundle gibi enstrümanları da sağlayarak programcının işini epeyce kolaylaştırır.
+
+- World: ECS içinde kullanılanacak tüm veri ve kaynakları içeren nesnedir. Entity'ler ve bileşenlerini, kaynakları ve sistemler arası mesajlaşmalar için de kullanılabilecek Event'leri içerir.
+-  
 
 ## Kaynaklar
 
