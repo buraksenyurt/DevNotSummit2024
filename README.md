@@ -15,7 +15,7 @@ DevNot Developer Summit 2024 için oluşturulmuş repodur. Rust programlama dili
  
 ## Tanım
 
-???
+ECS, karmaşık oyun mantıklarının daha kolay yönetimi için geliştirilmiş mimari bir yaklaşımdır. Eseneklik, modülerlik ve yeniden kullanılabilirlik gibi özellikleri öne çıkarır, Composition over Inheritance ilkesini benimser. 
 
 **Entity:** Benzersiz ID ile tanımlı basit bir konteyner. Gerekli bileşenleri içerir.(Tower, Player, Enemy, Bullet, Gate)
 **Component:** Sadece veri içeren ve Entity nesnelerine eklenen nesnelerdir. Bir entity bir bileşen nesnesinden sadece bir tane içerebilir.
@@ -63,6 +63,16 @@ Entity Component System, kalıtım yerine Composition over Inheritance yaklaşı
 cargo run --bin classic
 
 cargo run --bin composition
+
+cargo run --bin hello_ecs
+
+cargo run --bin simple_ecs
+
+cargo run --bin simple-ecs_2
+
+cargo run --bin robotic
+
+cargo run --bin game_without_bevy
 ```
 
 ## ECS ile OOP Arasındaki Farklar
@@ -91,9 +101,18 @@ cargo run --bin composition
 
 Bevy, ECS çatısının uygulanabildiği en ergonomik çatılardan birisidir. Bileşenler _(Components)_ struct olarak tanımlanırken, sistemler birer fonksiyon olarak yazılır. Bevy ECS, oyun dünyası _(World)_ , planlayıcı _(Scheduler)_ , komut listesi _(Command List)_, kaynaklar _(Resources)_ , sistem setleri _(System Sets)_ ve bundle gibi enstrümanları da sağlayarak programcının işini epeyce kolaylaştırır.
 
-- World: ECS içinde kullanılanacak tüm veri ve kaynakları içeren nesnedir. Entity'ler ve bileşenlerini, kaynakları ve sistemler arası mesajlaşmalar için de kullanılabilecek Event'leri içerir.
--  
+- **World:** ECS içinde kullanılanacak tüm veri ve kaynakları içeren nesnedir. Entity'ler ve bileşenlerini, kaynakları ve sistemler arası mesajlaşmalar için de kullanılabilecek Event'leri içerir.
+- **Resources:** World içerisindeki global değişkenler olarak düşünülebilir. _(Elapsed Times: örneğin belli aralıklarda sahaya bir göktaşının inmesi, Assets: her türlü ses ve grafik, Renderers)_
+- **Schedule:** Sistemlerin belli sırada çalıştırılmasını sağlamak için kullanılabilen enstrüman.
+- **Commands:** World nesnesi içerisinde yapısal değişiklikler için kullanılır. Örneğin Entity'lerin spawn/despawn edilmeleri, Entity nesnelerine Component'lerin eklenmesi, Resource nesnelerinin yönetimi.
+- **System Sets:** Bazı özelliklerin birden fazla sisteme kolayca uygulanabilmesi için kullanılabilen enstrümandır.
 
 ## Kaynaklar
 
 - Kendi ECS çatımızı yazmak istersek Ian'ın [şu adresteki](https://ianjk.com/ecs-in-rust/) öğretisine bakabiliriz. simple_ecs ve simple_ecs_2'de bu öğretinin pratik uygulaması yer almaktadır.
+- [Entity Component System - Wikipedia](https://en.wikipedia.org/wiki/Entity_component_system)
+- [Rust Entity Component Systems: ECS Libraries for Rust Game Dev 🧩 | Rodney Lab](https://rodneylab.com/rust-entity-component-systems/)
+- [Bevy Engine](https://bevyengine.org/)
+- [Build Your First Game in Bevy and Rust - Step by Step Tutorial](https://www.youtube.com/watch?v=E9SzRc9HkOg)
+- [ECS with Bevy Game Engine](https://www.youtube.com/watch?v=iH5NkbaXi0o)
+- [Unofficial Bevy Cheat Book](https://bevy-cheatbook.github.io/introduction.html)
