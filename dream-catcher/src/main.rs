@@ -1,27 +1,44 @@
+mod constants;
+
+use crate::constants::*;
 use bevy::math::*;
 use bevy::prelude::*;
-
-const SPACESHIP_SIZE: Vec2 = Vec2::new(100., 15.);
-const SPACESHIP_COLOR: Color = Color::srgb(0.4157, 0.6588, 0.3098);
-const SPACESHIP_SPEED: f32 = 500.;
 
 #[derive(Component)]
 struct Spaceship;
 
+#[derive(Component)]
+struct Ball;
+
+#[derive(Component, Deref, DerefMut)]
+struct Velocity(Vec2);
+
+#[derive(Component)]
+struct Collider {
+    size: Vec2,
+}
+
+#[derive(Bundle)]
+struct WallBundle {
+    sprite_bundle: SpriteBundle,
+    collider: Collider,
+}
+
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
-        .insert_resource(ClearColor(Color::srgb(0.4353, 0.6588, 0.8627)))
+        .insert_resource(ClearColor(Color::srgb(1., 1., 1.)))
         .add_systems(Update, bevy::window::close_when_requested)
         .add_systems(Startup, setup_system)
-        .add_systems(FixedUpdate, move_spaceship)
+        .add_systems(FixedUpdate, (move_spaceship, change_velocity))
         .run();
 }
 
-fn setup_system(mut commands: Commands, window: Query<&Window>) {
+fn setup_system(mut commands: Commands, asset_server: Res<AssetServer>, window: Query<&Window>) {
     commands.spawn(Camera2dBundle::default());
     let window = window.single();
     info!("Window size {:?}", window.resolution);
+
     // Spaceship
     commands.spawn((
         SpriteBundle {
@@ -42,6 +59,25 @@ fn setup_system(mut commands: Commands, window: Query<&Window>) {
         },
         Spaceship,
     ));
+
+    // Ball
+    let ball_texture = asset_server.load("textures/ball.png");
+    commands.spawn((
+        SpriteBundle {
+            transform: Transform {
+                translation: BALL_STARTING_POS,
+                ..default()
+            },
+            sprite: Sprite {
+                custom_size: Some(BALL_SIZE),
+                ..default()
+            },
+            texture: ball_texture,
+            ..default()
+        },
+        Ball,
+        Velocity(BALL_SPEED * BALL_INITIAL_DIRECTION),
+    ));
 }
 
 fn move_spaceship(
@@ -59,8 +95,16 @@ fn move_spaceship(
         direction += 1.0;
     }
 
-    let new_x = ship_transform.translation.x
-        + direction * SPACESHIP_SPEED * time_step.delta().as_secs_f32();
+    let new_x =
+        ship_transform.translation.x + direction * SPACESHIP_SPEED * time_step.delta_seconds();
 
     ship_transform.translation.x = new_x;
+}
+
+fn change_velocity(mut query: Query<(&mut Transform, &Velocity)>, time_step: Res<Time<Fixed>>) {
+    let delta_time = time_step.delta_seconds();
+    for (mut t, v) in &mut query {
+        t.translation.x += v.x * delta_time;
+        t.translation.y += v.x * delta_time;
+    }
 }
