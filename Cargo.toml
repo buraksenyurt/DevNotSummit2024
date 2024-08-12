@@ -1,3 +1,13 @@
 [workspace]
 resolver = "2"
-members = ["classic", "composition", "game_with_bevy", "game_without_bevy", "hello_ecs", "robotic", "simple_ecs", "simple_ecs_2"]
+members = [
+    "classic"
+    , "composition"
+    , "dream-catcher"
+    , "game_with_bevy"
+    , "game_without_bevy"
+    , "hello_ecs"
+    , "robotic"
+    , "simple_ecs"
+    , "simple_ecs_2"
+]

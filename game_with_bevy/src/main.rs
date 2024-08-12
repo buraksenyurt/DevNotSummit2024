@@ -50,7 +50,7 @@ fn player_movement(mut query: Query<(&Speed, &mut Position), With<Player>>) {
 fn enemy_movement(mut query: Query<(&Speed, &mut Position), With<Enemy>>) {
     let mut rng = rand::thread_rng();
     for (speed, mut position) in query.iter_mut() {
-        let direction: f32 = if rng.gen_bool(0.5) { 1.0 } else { -1.0 };
+        let _direction: f32 = if rng.gen_bool(0.5) { 1.0 } else { -1.0 };
         position.0 += speed.0;
         println!("enemy is moving to {}", position.0);
     }

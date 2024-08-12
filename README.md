@@ -73,6 +73,8 @@ cargo run --bin simple-ecs_2
 cargo run --bin robotic
 
 cargo run --bin game_without_bevy
+
+cargo run --bin game_with_bevy
 ```
 
 ## ECS ile OOP Arasındaki Farklar
