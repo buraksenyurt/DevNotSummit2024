@@ -7,7 +7,7 @@ members = [
     , "game_with_bevy"
     , "game_without_bevy"
     , "hello_ecs"
-    , "robotic"
+    , "inside_bevy", "robotic"
     , "simple_ecs"
     , "simple_ecs_2"
 ]
