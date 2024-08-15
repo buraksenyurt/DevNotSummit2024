@@ -39,12 +39,14 @@ fn main() {
     tower.insert(Position { x: 25.0, y: 25.0 });
 
     let mut schedule = Schedule::default();
-    schedule.add_systems(setup);
-    schedule.run(&mut world);
+    schedule.add_systems((setup, show_players, show_enemies).chain()); // Yazıldığı sırada çalıştırır
 
-    println!();
-
-    schedule.add_systems((show_players, show_enemies));
+    // schedule.add_systems(setup);
+    // schedule.run(&mut world);
+    //
+    // println!();
+    //
+    // schedule.add_systems((show_players, show_enemies));
     schedule.run(&mut world);
 }
 
