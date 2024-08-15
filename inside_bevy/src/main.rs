@@ -15,6 +15,9 @@ struct Velocity {
 #[derive(Debug, Component)]
 struct Player;
 
+#[derive(Debug, Resource)]
+struct Timer(f32);
+
 fn main() {
     let mut world = World::new();
 
@@ -38,8 +41,16 @@ fn main() {
     let mut tower = world.spawn_empty();
     tower.insert(Position { x: 25.0, y: 25.0 });
 
+    world.insert_resource(Timer(0.2));
+
     let mut schedule = Schedule::default();
-    schedule.add_systems((setup, show_players, show_enemies).chain()); // Yazıldığı sırada çalıştırır
+    schedule.add_systems((
+        (setup, show_players, show_enemies).chain(),
+        move_enemies
+            .after(setup)
+            .before(show_players)
+            .before(show_enemies),
+    )); // Yazıldığı sırada çalıştırır
 
     // schedule.add_systems(setup);
     // schedule.run(&mut world);
@@ -51,6 +62,7 @@ fn main() {
 }
 
 fn setup(query: Query<(Entity, &Position)>) {
+    println!("Setup system");
     for (entity, position) in query.iter() {
         println!("{:?}\t{:?}. ", entity, position);
     }
@@ -64,16 +76,23 @@ fn setup(query: Query<(Entity, &Position)>) {
 // }
 
 fn show_players(query: Query<&Position, With<Player>>) {
+    println!("Show players");
     for position in query.iter() {
         println!("Player on {:?}. ", position);
     }
 }
 
-fn show_enemies(mut query: Query<(&mut Position, &Velocity), Without<Player>>) {
-    for (mut position, velocity) in query.iter_mut() {
-        println!("Enemy on position {:?}. ", position);
-        position.x += velocity.x;
-        position.y += velocity.y;
+fn show_enemies(query: Query<(&Position, &Velocity), Without<Player>>) {
+    println!("Show enemies");
+    for (position, _) in query.iter() {
         println!("Enemy go to position {:?}. ", position);
+    }
+}
+
+fn move_enemies(mut query: Query<(&mut Position, &Velocity), Without<Player>>, timer: Res<Timer>) {
+    println!("Moving Enemies");
+    for (mut position, velocity) in query.iter_mut() {
+        position.x += velocity.x * timer.0;
+        position.y += velocity.y * timer.0;
     }
 }
