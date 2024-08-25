@@ -45,6 +45,6 @@ fn update_position(mut query: Query<(&mut Transform, &Velocity)>, time: Res<Time
 
 fn update_velocity(mut query: Query<(&Acceleration, &mut Velocity)>, time: Res<Time>) {
     for (acceleration, mut vel) in query.iter_mut() {
-        vel.value = acceleration.value * time.delta_seconds();
+        vel.value += acceleration.value * time.delta_seconds();
     }
 }
