@@ -1,4 +1,4 @@
-# DevNot Summit 2024 - Rust ile Oyun Programlamada ECS Kullanımı
+# DevNot Summit 2024 Rust ile Oyun Programlamada ECS Kullanımı
 
 DevNot Developer Summit 2024 için oluşturulmuş repodur. Rust programlama dili ile oyun geliştirme konseptinde, **ECS** _(Entity Component System)_ kullanımına dair örnekler içermektedir.
 
@@ -6,16 +6,16 @@ DevNot Developer Summit 2024 için oluşturulmuş repodur. Rust programlama dili
   - [Tanım](#tanım)
   - [ECS Neden Gereklidir?](#ecs-neden-gereklidir)
   - [ECS Hakkında Genel Bilgiler](#ecs-hakkında-genel-bilgiler)
-  - [Composition over Inheritance İlkesi](#composition-over-inheritance-ilkesi)
+  - [Composition Over Inheritance](#composition-over-inheritance)
   - [ECS ile OOP Arasındaki Farklar](#ecs-ile-oop-arasındaki-farklar)
   - [Tarihçe](#tarihçe)
   - [ECS in Kullanıldığı Diğer Alanlar](#ecs-in-kullanıldığı-diğer-alanlar)
   - [Bevy ECS Hakkında](#bevy-ecs-hakkında)
   - [Kaynaklar](#kaynaklar)
- 
+
 ## Tanım
 
-ECS, karmaşık oyun mantıklarının daha kolay yönetimi için geliştirilmiş mimari bir yaklaşımdır. Eseneklik, modülerlik ve yeniden kullanılabilirlik gibi özellikleri öne çıkarır, Composition over Inheritance ilkesini benimser. 
+ECS, karmaşık oyun mantıklarının daha kolay yönetimi için geliştirilmiş mimari bir yaklaşımdır. Eseneklik, modülerlik ve yeniden kullanılabilirlik gibi özellikleri öne çıkarır, Composition over Inheritance ilkesini benimser.
 
 **Entity:** Benzersiz ID ile tanımlı basit bir konteyner. Gerekli bileşenleri içerir.(Tower, Player, Enemy, Bullet, Gate)
 **Component:** Sadece veri içeren ve Entity nesnelerine eklenen nesnelerdir. Bir entity bir bileşen nesnesinden sadece bir tane içerebilir.
@@ -23,7 +23,7 @@ ECS, karmaşık oyun mantıklarının daha kolay yönetimi için geliştirilmiş
 
 ## ECS Neden Gereklidir?
 
-Bir oyun geliştirirken aktörler, nesneler, bileşenler ve kaynaklar gibi önemli enstrümanlar kullanılır. Bazı durumlarda oyun dünyası içindeki tüm nesnelerin bir hareketi söz konusu iken buna durağan nesneler dahil değildir. Dolayısıyla belli component'lere sahip olan nesneler için gerçekleştirilecek süreçlerde, örneğin sadece hareket etme kabiliyeti olan varlıkların her frame time anında bir kurala göre yer değiştirmesi ya da çarpışma ve hasar alma verileri içeren varlıklardan yok olanların sahadan ve oyun nesne koleksiyonlarından çıkartılması gibi devasa süreçlerde veri ile davranışın ayrıştırılması kod yönetimi, kod okunurluğu ve çalışma zamanı performansını artırabilir. Kalıtım bazlı klasik kod pratiklerini içeren oyun sistemlerinde bunu sağlamak çok kolay değildir. ECS burada bir çözüm olarak karşımıza çıkar. Yani nesne sayısının artmasına bağlı olarak oyun motorunun yavaşlaması ve kod ile verinin buna bağlı olarak çok karmaşıklaşması ECS ihtiyacını öne çıkaran konulardır. 
+Bir oyun geliştirirken aktörler, nesneler, bileşenler ve kaynaklar gibi önemli enstrümanlar kullanılır. Bazı durumlarda oyun dünyası içindeki tüm nesnelerin bir hareketi söz konusu iken buna durağan nesneler dahil değildir. Dolayısıyla belli component'lere sahip olan nesneler için gerçekleştirilecek süreçlerde, örneğin sadece hareket etme kabiliyeti olan varlıkların her frame time anında bir kurala göre yer değiştirmesi ya da çarpışma ve hasar alma verileri içeren varlıklardan yok olanların sahadan ve oyun nesne koleksiyonlarından çıkartılması gibi devasa süreçlerde veri ile davranışın ayrıştırılması kod yönetimi, kod okunurluğu ve çalışma zamanı performansını artırabilir. Kalıtım bazlı klasik kod pratiklerini içeren oyun sistemlerinde bunu sağlamak çok kolay değildir. ECS burada bir çözüm olarak karşımıza çıkar. Yani nesne sayısının artmasına bağlı olarak oyun motorunun yavaşlaması ve kod ile verinin buna bağlı olarak çok karmaşıklaşması ECS ihtiyacını öne çıkaran konulardır.
 
 ECS'in kazandırdığı bazı avantajlar şöyle sıralanabilir.
 
@@ -55,9 +55,9 @@ ECS, kodun yeniden kullanılabilirliğini _(Reusability)_ artırır ve veriyi da
 +----------------+----------+----------+----------+----------+
 ```
 
-## Composition over Inheritance İlkesi
+## Composition Over Inheritance
 
-Entity Component System, kalıtım yerine Composition over Inheritance yaklaşımını kullanır. Bir Entity tür hiyerarşisi yerine onunla ilişkili bileşenleri *(Component)* tarafından tanımlanır. Sistemler, istenen bileşenlere sahip Entity koleksiyonları üzerinde harket ederek çeşitli işlemler icra edebilir.Her ikisi arasındaki farkı yorumlamak için classic ve composition isimli Rust projelerinin kodlarına bakılabilir.
+Entity Component System, kalıtım yerine Composition over Inheritance yaklaşımını kullanır. Bir Entity tür hiyerarşisi yerine onunla ilişkili bileşenleri _(Component)_ tarafından tanımlanır. Sistemler, istenen bileşenlere sahip Entity koleksiyonları üzerinde harket ederek çeşitli işlemler icra edebilir.Her ikisi arasındaki farkı yorumlamak için classic ve composition isimli Rust projelerinin kodlarına bakılabilir.
 
 ```shell
 cargo run --bin classic
