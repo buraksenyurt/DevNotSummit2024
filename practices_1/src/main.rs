@@ -14,14 +14,18 @@ struct Velocity {
 }
 
 #[derive(Component, Debug)]
-struct Name(pub String);
+struct Name(String);
 
 #[derive(Resource)]
 struct Timer(f32);
 
+#[derive(Resource)]
+struct RunOnce(bool);
+
 fn main() {
     let mut world = World::new();
     world.insert_resource(Timer(0.2));
+    world.insert_resource(RunOnce(false));
 
     let mut warrior = world.spawn_empty();
     warrior.insert((
@@ -34,7 +38,7 @@ fn main() {
     legolas.insert((
         Name("Legolas".to_string()),
         Position::default(),
-        Velocity { x: 20.0, y: 20.0 },
+        Velocity { x: 1.5, y: 1.5 },
     ));
 
     let mut tower = world.spawn_empty();
@@ -42,24 +46,33 @@ fn main() {
 
     let mut runner = Schedule::default();
 
-    runner.add_systems((locate_all, go, show_current_positions).chain());
+    runner.add_systems(
+        (
+            setup.run_if(get_one_time_run_state),
+            go,
+            show_current_positions,
+        )
+            .chain(),
+    );
 
+    runner.run(&mut world);
+    runner.run(&mut world);
     runner.run(&mut world);
 }
 
-fn locate_all(mut query: Query<&mut Position>) {
+fn setup(mut query: Query<&mut Position>, mut res: ResMut<RunOnce>) {
     println!("Locating...");
     let mut rnd = rand::thread_rng();
     for mut p in query.iter_mut() {
         p.x = rnd.gen_range(0.0..10.0);
         p.y = 0.0;
     }
+    res.0 = true;
 }
 
 fn go(mut query: Query<(&mut Position, &Velocity)>, res: Res<Timer>) {
     println!("Going...");
     for (mut p, v) in query.iter_mut() {
-        println!("Velocity {:?}", v);
         p.x += v.x * res.0;
         p.y += v.y * res.0;
     }
@@ -69,4 +82,8 @@ fn show_current_positions(_commands: Commands, query: Query<(&Name, &Position)>)
     for (n, p) in query.iter() {
         println!("{:?} ({:?})", n, p);
     }
+}
+
+fn get_one_time_run_state(res: Res<RunOnce>) -> bool {
+    res.0
 }
