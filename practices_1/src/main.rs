@@ -80,7 +80,7 @@ fn go(mut query: Query<(&mut Position, &Velocity)>, res: Res<Timer>) {
 
 fn show_current_positions(_commands: Commands, query: Query<(&Name, &Position)>) {
     for (n, p) in query.iter() {
-        println!("{:?} ({:?})", n, p);
+        println!("{:?} ({:?})", n.0, p);
     }
 }
 

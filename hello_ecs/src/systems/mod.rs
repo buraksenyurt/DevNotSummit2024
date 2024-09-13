@@ -1,7 +1,7 @@
 use crate::components::*;
 use crate::entities::*;
 
-pub fn movement_system(enemies: &mut Vec<Enemy>, bullets: &mut Vec<Bullet>) {
+pub fn movement_system(enemies: &mut [Enemy], bullets: &mut [Bullet]) {
     for enemy in enemies.iter_mut() {
         enemy.position.x += enemy.velocity.speed * enemy.velocity.direction.0;
         enemy.position.y += enemy.velocity.speed * enemy.velocity.direction.1;
@@ -21,7 +21,7 @@ pub fn movement_system(enemies: &mut Vec<Enemy>, bullets: &mut Vec<Bullet>) {
     }
 }
 
-pub fn attack_system(towers: &Vec<Tower>, enemies: &mut Vec<Enemy>, bullets: &mut Vec<Bullet>) {
+pub fn attack_system(towers: &Vec<Tower>, enemies: &mut [Enemy], bullets: &mut Vec<Bullet>) {
     for tower in towers {
         for enemy in enemies.iter_mut() {
             let distance = ((tower.position.x - enemy.position.x).powi(2)
@@ -29,8 +29,8 @@ pub fn attack_system(towers: &Vec<Tower>, enemies: &mut Vec<Enemy>, bullets: &mu
             .sqrt();
             if distance <= tower.range.value {
                 bullets.push(Bullet {
-                    position: tower.position.clone(),
-                    damage: tower.damage.clone(),
+                    position: tower.position,
+                    damage: tower.damage,
                     velocity: Velocity {
                         speed: 5.0,
                         direction: (
