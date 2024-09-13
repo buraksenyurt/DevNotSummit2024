@@ -3,40 +3,38 @@ use rand::Rng;
 
 #[derive(Component, Default, Debug)]
 struct Position {
-    pub x: i32,
-    pub y: i32,
+    pub x: f32,
+    pub y: f32,
 }
 
 #[derive(Component, Default, Debug)]
 struct Velocity {
-    pub x: i32,
-    pub y: i32,
+    pub x: f32,
+    pub y: f32,
 }
 
 #[derive(Component, Debug)]
-struct Actor {
-    pub name: String,
-}
+struct Name(pub String);
+
+#[derive(Resource)]
+struct Timer(f32);
 
 fn main() {
     let mut world = World::new();
+    world.insert_resource(Timer(0.2));
 
     let mut warrior = world.spawn_empty();
     warrior.insert((
-        Actor {
-            name: "Durin".to_string(),
-        },
+        Name("Durin".to_string()),
         Position::default(),
-        Velocity { x: 10, y: 10 },
+        Velocity { x: 1.0, y: 1.0 },
     ));
 
     let mut legolas = world.spawn_empty();
     legolas.insert((
-        Actor {
-            name: "Legolas".to_string(),
-        },
+        Name("Legolas".to_string()),
         Position::default(),
-        Velocity { x: 20, y: 20 },
+        Velocity { x: 20.0, y: 20.0 },
     ));
 
     let mut tower = world.spawn_empty();
@@ -44,22 +42,31 @@ fn main() {
 
     let mut runner = Schedule::default();
 
-    runner.add_systems(locate_all.after(movement));
+    runner.add_systems((locate_all, go, show_current_positions).chain());
 
     runner.run(&mut world);
 }
 
 fn locate_all(mut query: Query<&mut Position>) {
+    println!("Locating...");
     let mut rnd = rand::thread_rng();
     for mut p in query.iter_mut() {
-        p.x = rnd.gen_range(0..100);
-        p.y = 0;
+        p.x = rnd.gen_range(0.0..10.0);
+        p.y = 0.0;
     }
 }
 
-fn movement(mut query: Query<(&mut Position, &Velocity)>) {
+fn go(mut query: Query<(&mut Position, &Velocity)>, res: Res<Timer>) {
+    println!("Going...");
     for (mut p, v) in query.iter_mut() {
-        p.x += v.x;
-        p.y += v.y;
+        println!("Velocity {:?}", v);
+        p.x += v.x * res.0;
+        p.y += v.y * res.0;
+    }
+}
+
+fn show_current_positions(_commands: Commands, query: Query<(&Name, &Position)>) {
+    for (n, p) in query.iter() {
+        println!("{:?} ({:?})", n, p);
     }
 }
