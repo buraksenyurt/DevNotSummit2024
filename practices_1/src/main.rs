@@ -14,7 +14,7 @@ struct Velocity {
 }
 
 #[derive(Component, Debug)]
-struct Name(String);
+struct Name(&'static str);
 
 #[derive(Resource)]
 struct Timer(f32);
@@ -29,14 +29,14 @@ fn main() {
 
     let mut warrior = world.spawn_empty();
     warrior.insert((
-        Name("Durin".to_string()),
+        Name("Durin"),
         Position::default(),
         Velocity { x: 1.0, y: 1.0 },
     ));
 
     let mut legolas = world.spawn_empty();
     legolas.insert((
-        Name("Legolas".to_string()),
+        Name("Legolas"),
         Position::default(),
         Velocity { x: 1.5, y: 1.5 },
     ));
