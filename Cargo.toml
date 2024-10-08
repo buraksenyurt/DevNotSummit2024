@@ -10,7 +10,7 @@ members = [
     , "inside_bevy"
     , "practices_1"
     , "practices_2"
-    , "practices_3", "robotic"
+    , "practices_3", "practices_4", "robotic"
     , "simple_ecs"
     , "simple_ecs_2"
 ]

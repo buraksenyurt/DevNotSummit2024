@@ -4,14 +4,29 @@ fn main() {
     let mut world = World::new();
 
     let mut orc_1 = world.spawn_empty();
-    orc_1.insert((Position { x: 100.0, y: 0.0 }, Health(100),Speed(1.0),Power(2)));
+    orc_1.insert((
+        Position { x: 100.0, y: 0.0 },
+        Health(100),
+        Speed(1.0),
+        Power(2),
+    ));
 
     let mut orc_2 = world.spawn_empty();
-    orc_2.insert((Position { x: 0.0, y: -100.0 }, Health(100),Speed(1.0),Power(2)));
+    orc_2.insert((
+        Position { x: 0.0, y: -100.0 },
+        Health(100),
+        Speed(1.0),
+        Power(2),
+    ));
     //println!("{}", &left_tower.id());
 
     let mut archer = world.spawn_empty();
-    archer.insert((Position { x: 100.0, y: 0.0 }, Speed(5.0),Health(100), Power(5)));
+    archer.insert((
+        Position { x: 100.0, y: 0.0 },
+        Speed(5.0),
+        Health(100),
+        Power(5),
+    ));
     //println!("{}", &archer.id());
 
     let mut planner = Schedule::default();
