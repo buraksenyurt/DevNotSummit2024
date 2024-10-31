@@ -8,7 +8,7 @@ members = [
     , "game_without_bevy"
     , "hello_ecs"
     , "inside_bevy"
-    , "practices_1"
+    , "learning_ecs", "practices_1"
     , "practices_2"
     , "practices_3", "practices_4", "robotic"
     , "simple_ecs"
