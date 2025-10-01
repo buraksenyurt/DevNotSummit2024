@@ -3,6 +3,7 @@
 [DevNot Developer Summit 2024](https://summit.devnot.com/2024/) için oluşturulmuş repodur. Rust programlama dili ile oyun geliştirme konseptinde, **ECS** _(Entity Component System)_ kullanımına dair örnekler ve kısa notlar içermektedir.
 
 - [İçerik](#devnot-summit-2024-rust-ile-oyun-programlamada-ecs-kullanımı)
+  - [Projeler](#projeler)
   - [Tanım](#tanım)
   - [ECS Neden Gereklidir?](#ecs-neden-gereklidir)
   - [ECS Hakkında Genel Bilgiler](#ecs-hakkında-genel-bilgiler)
@@ -12,6 +13,22 @@
   - [ECS in Kullanıldığı Diğer Alanlar](#ecs-in-kullanıldığı-diğer-alanlar)
   - [Bevy ECS Hakkında](#bevy-ecs-hakkında)
   - [Kaynaklar](#kaynaklar)
+
+## Projeler
+
+| Proje Adı | Açıklama |
+|-----------|----------|
+| **classic** | Kalıtım (inheritance) tabanlı klasik OOP yaklaşımı ile Archer, Warrior, Healer karakterlerinin implementasyonu |
+| **composition** | Composition over Inheritance prensibiyle bileşenler (Position, Health, Damage, vb.) kullanarak karakter tasarımı |
+| **dream-catcher** | Bevy ile uzay gemisi kontrolü ve top hareketi içeren basit bir oyun prototipi |
+| **game_with_bevy** | Bevy ECS kullanarak Player ve Enemy varlıklarının hareket ve hedef kontrolü simulasyonu |
+| **game_without_bevy** | Bevy kullanmadan manuel struct'larla Player, Enemy ve Goal mekanizmasının implementasyonu |
+| **hello_ecs** | Tower Defence tarzı oyun için Entity-Component-System yapısının modüler organizasyonu |
+| **simple_ecs** | Basit bir ECS implementasyonu ile Health, Attack ve Id bileşenlerinin vektör tabanlı yönetimi |
+| **simple_ecs_2** | Geliştirilmiş ECS yapısı, RefCell ve downcast kullanarak dinamik bileşen yönetimi |
+| **robotic** | ECS prensipleriyle robot sistemlerinde sensör okuma, pozisyon güncelleme ve kol kontrolü |
+| **inside_bevy** | Bevy'nin World, Schedule, Query ve Resource mekanizmalarının temel kullanımı |
+| **learning_ecs** | Classic, composition ve bevy_style modüllerini içeren ECS öğrenme projesi |
 
 ## Tanım
 
